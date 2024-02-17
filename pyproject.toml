@@ -27,9 +27,9 @@ classifiers = [
 dependencies = []
 
 [project.urls]
-Documentation = "https://github.com/unknown/exflux#readme"
-Issues = "https://github.com/unknown/exflux/issues"
-Source = "https://github.com/unknown/exflux"
+Documentation = "https://github.com/mikmart/exflux/exflux#readme"
+Issues = "https://github.com/mikmart/exflux/exflux/issues"
+Source = "https://github.com/mikmart/exflux/exflux"
 
 [tool.hatch.version]
 path = "src/exflux/__about__.py"
