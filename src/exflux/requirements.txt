@@ -1,0 +1,4 @@
+certifi
+influxdb3-python
+omegaconf
+pandas
