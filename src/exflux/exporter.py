@@ -4,8 +4,8 @@ from dataclasses import dataclass
 from typing import Protocol, Self
 
 import pandas as pd
-from client import InfluxClientFactory
-from settings import ExportConfig, ExportDestinationConfig, Settings
+from .client import InfluxClientFactory
+from .settings import ExportConfig, ExportDestinationConfig, Settings
 
 
 @dataclass

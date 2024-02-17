@@ -1,7 +1,7 @@
 import argparse
 
-from exporter import Exporter
-from settings import Settings
+from . import Exporter
+from . import Settings
 
 
 def parse_args():

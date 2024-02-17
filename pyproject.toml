@@ -38,3 +38,6 @@ Source = "https://github.com/mikmart/exflux/exflux"
 
 [tool.hatch.version]
 path = "src/exflux/__about__.py"
+
+[project.scripts]
+exflux = "exflux.cli:main"
