@@ -24,7 +24,12 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
-dependencies = []
+dependencies = [
+  "certifi",
+  "influxdb3-python",
+  "omegaconf",
+  "pandas"
+]
 
 [project.urls]
 Documentation = "https://github.com/mikmart/exflux/exflux#readme"
