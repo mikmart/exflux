@@ -12,7 +12,7 @@ def parse_args():
 def main():
     args = parse_args()
     settings = Settings.load(args.settings_file)
-    exporter = create_exporter(settings)
+    exporter = create_exporter(settings.database)
     for export in settings.exports:
         destination = create_export_destination(export.destination)
         exporter.export(export.source.bucket, export.source.query, destination)

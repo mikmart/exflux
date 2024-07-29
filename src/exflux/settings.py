@@ -25,9 +25,14 @@ class Loadable(ABC):
 
 @dataclass
 class Settings(Loadable):
+    database: DatabaseConfig
+    exports: list[ExportConfig] = field(default_factory=list)
+
+
+@dataclass
+class DatabaseConfig:
     cluster_url: str
     api_token: str
-    exports: list[ExportConfig] = field(default_factory=list)
 
 
 @dataclass
@@ -48,8 +53,8 @@ class ExportDestinationConfig:
     name: str
 
 
-def create_exporter(settings: Settings) -> Exporter:
-    return Exporter(InfluxClientFactory(settings.cluster_url, settings.api_token))
+def create_exporter(config: DatabaseConfig) -> Exporter:
+    return Exporter(InfluxClientFactory(config.cluster_url, config.api_token))
 
 
 def create_export_destination(config: ExportDestinationConfig) -> ExportDestination:

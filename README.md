@@ -19,8 +19,9 @@ exflux -f settings.yaml
 Where `settings.yaml`:
 
 ``` yaml
-cluster_url: https://eu-central-1-1.aws.cloud2.influxdata.com
-api_token: ${oc.env:INFLUX_TOKEN}
+database:
+  cluster_url: https://eu-central-1-1.aws.cloud2.influxdata.com
+  api_token: ${oc.env:INFLUX_TOKEN}
 
 exports:
   - destination:
