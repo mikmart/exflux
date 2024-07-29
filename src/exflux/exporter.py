@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from dataclasses import dataclass
 from typing import Protocol
 
@@ -8,18 +6,21 @@ import pandas as pd
 from .client import InfluxClientFactory
 
 
+class ExportDestination(Protocol):
+    def send(self, df: pd.DataFrame, timestamp: pd.Timestamp) -> None: ...
+
+
 @dataclass
 class Exporter:
     client_factory: InfluxClientFactory
 
     def export(self, bucket: str, query: str, destination: ExportDestination) -> None:
+        # TODO: Feels like this should accept an ExportSource..
         with self.client_factory.create_client(bucket) as client:
-            table, ts = client.query(query), pd.Timestamp.utcnow()
-            destination.send(table.to_pandas(), ts)
-
-
-class ExportDestination(Protocol):
-    def send(self, df: pd.DataFrame, timestamp: pd.Timestamp) -> None: ...
+            ts = pd.Timestamp.utcnow()
+            df = client.query(query).to_pandas()
+            assert isinstance(df, pd.DataFrame)
+            destination.send(df, ts)
 
 
 @dataclass
