@@ -1,43 +1,25 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Protocol, Self
+from typing import Protocol
 
 import pandas as pd
+
 from .client import InfluxClientFactory
-from .settings import ExportConfig, ExportDestinationConfig, Settings
 
 
 @dataclass
 class Exporter:
     client_factory: InfluxClientFactory
 
-    def export(self, config: ExportConfig) -> None:
-        destination = create_export_destination(config.destination)
-        self._export(config.source.bucket, config.source.query, destination)
-
-    def _export(self, bucket: str, query: str, destination: ExportDestination) -> None:
-        with self.client_factory.create_client(bucket=bucket) as client:
+    def export(self, bucket: str, query: str, destination: ExportDestination) -> None:
+        with self.client_factory.create_client(bucket) as client:
             table, ts = client.query(query), pd.Timestamp.utcnow()
             destination.send(table.to_pandas(), ts)
 
-    @classmethod
-    def from_settings(cls, settings: Settings) -> Self:
-        return cls(InfluxClientFactory(settings.cluster_url, settings.api_token))
-
 
 class ExportDestination(Protocol):
-    def send(self, df: pd.DataFrame, timestamp: pd.Timestamp) -> None:
-        ...
-
-
-def create_export_destination(config: ExportDestinationConfig) -> ExportDestination:
-    # TODO: Maybe a class and dynamically register export destinations like plugins?
-    match config.kind:
-        case "csv":
-            return CsvExportDestination(config.name)
-        case kind:
-            raise TypeError(f"Unsupported export destination kind: {kind}")
+    def send(self, df: pd.DataFrame, timestamp: pd.Timestamp) -> None: ...
 
 
 @dataclass

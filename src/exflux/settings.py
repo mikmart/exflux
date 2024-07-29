@@ -8,6 +8,9 @@ from typing import Self, cast
 
 from omegaconf import OmegaConf
 
+from .client import InfluxClientFactory
+from .exporter import CsvExportDestination, ExportDestination, Exporter
+
 
 class Loadable(ABC):
     @classmethod
@@ -43,3 +46,16 @@ class ExportSourceConfig:
 class ExportDestinationConfig:
     kind: str
     name: str
+
+
+def create_exporter(settings: Settings) -> Exporter:
+    return Exporter(InfluxClientFactory(settings.cluster_url, settings.api_token))
+
+
+def create_export_destination(config: ExportDestinationConfig) -> ExportDestination:
+    # TODO: Maybe a class and dynamically register export destinations like plugins?
+    match config.kind:
+        case "csv":
+            return CsvExportDestination(config.name)
+        case kind:
+            raise TypeError(f"Unsupported export destination kind: {kind}")

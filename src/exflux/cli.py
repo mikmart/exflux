@@ -1,7 +1,6 @@
 import argparse
 
-from . import Exporter
-from . import Settings
+from .settings import Settings, create_export_destination, create_exporter
 
 
 def parse_args():
@@ -13,9 +12,10 @@ def parse_args():
 def main():
     args = parse_args()
     settings = Settings.load(args.settings_file)
-    exporter = Exporter.from_settings(settings)
-    for export_config in settings.exports:
-        exporter.export(export_config)
+    exporter = create_exporter(settings)
+    for export in settings.exports:
+        destination = create_export_destination(export.destination)
+        exporter.export(export.source.bucket, export.source.query, destination)
 
 
 if __name__ == "__main__":
