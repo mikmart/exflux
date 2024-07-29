@@ -14,6 +14,7 @@ def main():
     settings = Settings.load(args.settings_file)
     exporter = create_exporter(settings.database)
     for export in settings.exports:
+        print(f"Exporting from {export.source.bucket} to {export.destination.name}...")
         destination = create_export_destination(export.destination)
         exporter.export(export.source.bucket, export.source.query, destination)
 

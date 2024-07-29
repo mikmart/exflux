@@ -35,3 +35,9 @@ exports:
         WHERE time >= now() - interval '1 day'
         ORDER BY time
 ```
+
+## Testing
+
+```shell
+hatch run exflux -f settings.yaml
+```

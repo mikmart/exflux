@@ -1,0 +1,15 @@
+database:
+  cluster_url: https://eu-central-1-1.aws.cloud2.influxdata.com
+  api_token: ${oc.env:INFLUX_TOKEN}
+
+exports:
+  - destination:
+      kind: csv
+      name: telegraf_weather
+    source:
+      bucket: Telegraf
+      query: >
+        SELECT *
+        FROM "weather"
+        WHERE time >= now() - interval '1 day'
+        ORDER BY time
